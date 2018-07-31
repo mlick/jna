@@ -17,6 +17,10 @@ import java.util.concurrent.TimeUnit;
 import static me.coley.simplejna.Mouse.MOUSEEVENTF_LEFTDOWN;
 import static me.coley.simplejna.Mouse.MOUSEEVENTF_LEFTUP;
 
+
+/*
+ * https://e.dituhui.com/app
+ */
 public class MouseSerice extends MouseHookManager {
 
 
