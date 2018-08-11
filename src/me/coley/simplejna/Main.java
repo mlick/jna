@@ -1,14 +1,15 @@
 package me.coley.simplejna;
 
+import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.WinDef;
+import com.sun.jna.platform.win32.WinNT;
 import me.coley.simplejna.hook.key.KeyEventReceiver;
 import me.coley.simplejna.hook.key.KeyHookManager;
 import me.coley.simplejna.hook.mouse.MouseEventReceiver;
 import me.coley.simplejna.hook.mouse.MouseHookManager;
 import me.coley.simplejna.hook.mouse.struct.MouseButtonType;
 
-import static me.coley.simplejna.Mouse.MOUSEEVENTF_LEFTDOWN;
-import static me.coley.simplejna.Mouse.MOUSEEVENTF_LEFTUP;
+import static com.sun.jna.platform.win32.Wincon.*;
 
 /**
  * @author mlick lixiangxin
@@ -77,9 +78,34 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
+        WinNT.HANDLE hStdin = Kernel32.INSTANCE.GetStdHandle(STD_INPUT_HANDLE);
+        Kernel32.INSTANCE.SetConsoleMode(hStdin,
+                ~ENABLE_QUICK_EDIT_MODE //移除快速编辑模式
+                        & ~ENABLE_INSERT_MODE    //移除插入模式
+                        & ~ENABLE_MOUSE_INPUT    //
+                        & ~ENABLE_PROCESSED_INPUT    //
+                        & ~ENABLE_LINE_INPUT    //
+                        & ~ENABLE_ECHO_INPUT    //
+                        & ~ENABLE_WINDOW_INPUT    //
+                        & ~ENABLE_ECHO_INPUT    //
+        );
+
+
         isStop = false;
         mouseHook.hook(mer);
         keyHook.hook(ker);
+
+//        Runtime runtime = Runtime.getRuntime();
+//
+//        boolean iss = Kernel32.INSTANCE.AllocConsole();
+//
+//        System.out.println(iss);
+//
+//        System.out.println(Kernel32.INSTANCE.GetLastError());
+
+//        Kernel32.INSTANCE.CreateProcess("cmd", "D:\\apache-tomcat-8.5\\bin\\startup.bat",
+//                null, null, false, null,
+//                null, null, null, null);
 
 //        for (int i = 10; i < 1000; i += 5) {
 //            if (isStop) {
